@@ -1,22 +1,22 @@
-'use client';
-import BlogCard from '@/src/components/dashboard/BlogCard';
-import PostCard from '@/src/components/dashboard/PostCard';
-import { useGetAllBlogs } from '@/src/hooks/blog.hook';
-import { IBlog, ICategory } from '@/src/types';
-import React, { useState } from 'react';
-import SingleBlogCard from './SingleBlogCard';
-import RightSection from '@/src/components/sharred/RightSection';
-import BlogRightSection from './BlogRightSection';
-import PaginationHelper from '@/src/components/sharred/paginationHelper';
-import { useGetAllCategories } from '@/src/hooks/category.hook';
-import { Button } from '@nextui-org/button';
-import BlogsPageSkeleton from '@/src/components/loading-skeleton/BlogsSkeleton';
-import HomePageFullSkeleton from '@/src/components/loading-skeleton/HomeSkeleton';
+"use client";
+import BlogCard from "@/src/components/dashboard/BlogCard";
+import PostCard from "@/src/components/dashboard/PostCard";
+import { useGetAllBlogs } from "@/src/hooks/blog.hook";
+import { IBlog, ICategory } from "@/src/types";
+import React, { useState } from "react";
+import SingleBlogCard from "./SingleBlogCard";
+import RightSection from "@/src/components/sharred/RightSection";
+import BlogRightSection from "./BlogRightSection";
+import PaginationHelper from "@/src/components/sharred/paginationHelper";
+import { useGetAllCategories } from "@/src/hooks/category.hook";
+import { Button } from "@nextui-org/button";
+import BlogsPageSkeleton from "@/src/components/loading-skeleton/BlogsSkeleton";
+import HomePageFullSkeleton from "@/src/components/loading-skeleton/HomeSkeleton";
 
 const BlogsPage = () => {
   const [page, setPage] = useState(1);
   const limit = 6;
-  const [categoryValue, setCategoryValue] = useState('');
+  const [categoryValue, setCategoryValue] = useState("");
   const { data: blogs, isLoading } = useGetAllBlogs({
     page,
     limit,
@@ -46,14 +46,14 @@ const BlogsPage = () => {
           </p>
 
           {/* button */}
-          <div className="inline-flex flex-wrap w-full mb-4 gap-4 lg:my-8 ">
+          <div className="inline-flex flex-wrap w-full mb-4 lg:gap-8 gap-4 lg:my-8 ">
             <Button
               className={
                 !categoryValue
-                  ? 'bg-primary text-white hover:bg-green-700'
-                  : 'bg-gray-100 hover:bg-gray-200'
+                  ? "bg-primary text-white hover:bg-green-700"
+                  : "bg-gray-100 hover:bg-gray-200"
               }
-              onClick={() => setCategoryValue('')}
+              onClick={() => setCategoryValue("")}
             >
               All
             </Button>
@@ -63,12 +63,12 @@ const BlogsPage = () => {
                   key={index}
                   className={
                     categoryValue === item._id
-                      ? 'bg-primary text-white hover:bg-green-700'
-                      : 'bg-gray-100 hover:bg-gray-200'
+                      ? "bg-primary text-white hover:bg-green-700"
+                      : "bg-gray-100 hover:bg-gray-200"
                   }
                   onClick={() => handleCategoryValue(item._id)}
                 >
-                  {' '}
+                  {" "}
                   {item.name}
                 </Button>
               )

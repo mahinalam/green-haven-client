@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/button';
-import Link from 'next/link';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import Link from "next/link";
+import { ChangeEvent, useEffect, useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
-import GTForm from '@/src/components/form/GTForm';
-import GTInput from '@/src/components/form/GTInput';
-import { useUser } from '@/src/context/user.provider';
-import { useUserLogin, useUserRegistration } from '@/src/hooks/auth.hook';
-import registerValidationSchema from '@/src/schemas/register.schema';
-import loginValidationSchema from '@/src/schemas/login.schema';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { getCurrentUser } from '@/src/services/AuthService';
-import { useQueryClient } from '@tanstack/react-query';
+import GTForm from "@/src/components/form/GTForm";
+import GTInput from "@/src/components/form/GTInput";
+import { useUser } from "@/src/context/user.provider";
+import { useUserLogin, useUserRegistration } from "@/src/hooks/auth.hook";
+import registerValidationSchema from "@/src/schemas/register.schema";
+import loginValidationSchema from "@/src/schemas/login.schema";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { getCurrentUser } from "@/src/services/AuthService";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,19 +25,18 @@ export default function LoginPage() {
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setUserLoading(true);
-    const id = toast.loading('Logging in...');
+    const id = toast.loading("Logging in...");
     handleUserLogin(data, {
       onSuccess: async () => {
         const result = await getCurrentUser();
         setUserLoading(true);
-        toast.success('Login successful! Welcome back 🎉', { id });
+        toast.success("Login successful! Welcome back 🎉", { id });
         queryClient.invalidateQueries({
-          queryKey: ['SINGLE_USER', result?._id],
+          queryKey: ["SINGLE_USER", result?._id],
         });
       },
       onError: () => {
-        toast.error('Login failed. Please check your email and password.', {
+        toast.error("Login failed. Please check your email and password.", {
           id,
         });
       },
@@ -45,7 +44,7 @@ export default function LoginPage() {
   };
   useEffect(() => {
     if (!isPending && isSuccess) {
-      router.push('/');
+      router.push("/");
     }
   }, [isPending, isSuccess]);
 
@@ -55,19 +54,19 @@ export default function LoginPage() {
     password: string;
   }) => {
     setUserLoading(true);
-    const id = toast.loading('Logging in...');
+    const id = toast.loading("Logging in...");
 
     handleUserLogin(data, {
       onSuccess: async () => {
         const result = await getCurrentUser();
         setUser(result);
         queryClient.invalidateQueries({
-          queryKey: ['SINGLE_USER', result?._id],
+          queryKey: ["SINGLE_USER", result?._id],
         });
-        toast.success('Login successful! Welcome back 🎉', { id });
+        toast.success("Login successful! Welcome back 🎉", { id });
       },
       onError: () => {
-        toast.error('Login failed. Please check your email and password.', {
+        toast.error("Login failed. Please check your email and password.", {
           id,
         });
       },
@@ -85,8 +84,8 @@ export default function LoginPage() {
             className="bg-primary p-2 text-white rounded-lg text-sm"
             onClick={() =>
               handleCredentailsLogin({
-                email: 'user@gmail.com',
-                password: '123456',
+                email: "user@gmail.com",
+                password: "123456",
               })
             }
           >
@@ -96,8 +95,8 @@ export default function LoginPage() {
             className="bg-primary p-2 text-white rounded-lg text-sm"
             onClick={() =>
               handleCredentailsLogin({
-                email: 'mahin@gmail.com',
-                password: '123456',
+                email: "admin@gmail.com",
+                password: "123456",
               })
             }
           >

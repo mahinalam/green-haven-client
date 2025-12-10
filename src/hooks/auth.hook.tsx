@@ -76,7 +76,7 @@ export const useGetSingleUser = (userId: string) => {
 
 export const useGetAllUsers = (params: { [key: string]: any }) => {
   return useQuery({
-    queryKey: ["USER", params],
+    queryKey: ["USERS", params],
     queryFn: async () => await getAllUsers(params),
   });
 };

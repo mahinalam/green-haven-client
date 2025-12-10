@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import NavComponent from './NavComponent';
-import Link from 'next/link';
-import { useUser } from '@/src/context/user.provider';
-import { Input } from '@nextui-org/input';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import Spinner from './Spiner'; // your spinner component
-import { useGetSingleUser, useVerifyUserProfile } from '@/src/hooks/auth.hook';
-import { AiOutlineHome } from 'react-icons/ai';
-import { MdOutlineTipsAndUpdates } from 'react-icons/md';
-import { IoBookmarkOutline } from 'react-icons/io5';
-import { RiCloseLine } from 'react-icons/ri';
-import { CiSearch } from 'react-icons/ci';
-import { GoPlus } from 'react-icons/go';
-import { LuUserRound } from 'react-icons/lu';
-import { GrContact } from 'react-icons/gr';
-import { toast } from 'sonner';
-import { logout } from '@/src/services/AuthService';
-import VerificationModal from '../modal/VerificationModal';
-import { useDisclosure } from '@nextui-org/modal';
-import { GoMoveToTop } from 'react-icons/go';
-import { useQueryClient } from '@tanstack/react-query';
+import React, { useState } from "react";
+import NavComponent from "./NavComponent";
+import Link from "next/link";
+import { useUser } from "@/src/context/user.provider";
+import { Input } from "@nextui-org/input";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Spinner from "./Spiner";
+import { useGetSingleUser, useVerifyUserProfile } from "@/src/hooks/auth.hook";
+import { AiOutlineHome } from "react-icons/ai";
+import { MdOutlineTipsAndUpdates } from "react-icons/md";
+import { IoBookmarkOutline } from "react-icons/io5";
+import { RiCloseLine } from "react-icons/ri";
+import { CiSearch } from "react-icons/ci";
+import { GoPlus } from "react-icons/go";
+import { LuUserRound } from "react-icons/lu";
+import { GrContact } from "react-icons/gr";
+import { toast } from "sonner";
+import { logout } from "@/src/services/AuthService";
+import VerificationModal from "../modal/VerificationModal";
+import { useDisclosure } from "@nextui-org/modal";
+import { GoMoveToTop } from "react-icons/go";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LeftSection = () => {
   const { user, setIsLoading, setUser } = useUser();
-  const [activeTab, setActiveTab] = useState('home');
-  const [searchValue, setSearchValue] = useState('');
+  const [activeTab, setActiveTab] = useState("home");
+  const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -46,13 +46,12 @@ const LeftSection = () => {
     isError,
   } = useVerifyUserProfile(user?._id as string);
 
-  const userId = user?._id;
   const { data: currentUserInfo, isLoading } = useGetSingleUser(
     user?._id as string
   );
   const queryClient = useQueryClient();
 
-  const isLoginOrSignUp = pathname === '/login' || pathname === '/register';
+  const isLoginOrSignUp = pathname === "/login" || pathname === "/register";
 
   // search fn
   const handleSearch = (value: string) => {
@@ -62,17 +61,17 @@ const LeftSection = () => {
     if (trimmed) {
       router.push(`/?search=${trimmed}`);
     } else {
-      router.push('/');
+      router.push("/");
     }
   };
 
   // Clear search handler (optional: guard pathname here too)
 
   const clearSearch = () => {
-    setSearchValue('');
+    setSearchValue("");
 
     const params = new URLSearchParams(Array.from(searchParams.entries()));
-    params.delete('search');
+    params.delete("search");
 
     const query = params.toString();
     const newUrl = query ? `${pathname}?${query}` : pathname;
@@ -81,10 +80,10 @@ const LeftSection = () => {
   };
   const handleLogout = async () => {
     setIsLoading(true);
-    queryClient.invalidateQueries({ queryKey: ['SINGLE_USER', user?._id] });
+    queryClient.invalidateQueries({ queryKey: ["SINGLE_USER", user?._id] });
     await logout();
     toast.success(`${user?.name} logged out successfully!`);
-    router.push('/login');
+    router.push("/login");
   };
 
   // verify profile
@@ -93,10 +92,10 @@ const LeftSection = () => {
     await verifyProfile();
     if (isSuccess) {
       queryClient.invalidateQueries({
-        queryKey: ['SINGLE_USER', user?._id],
+        queryKey: ["SINGLE_USER", user?._id],
       });
       queryClient.invalidateQueries({
-        queryKey: ['PAYMENT'],
+        queryKey: ["PAYMENT"],
       });
       setVerifyLoading(false);
       onVerificationModalOpenChange();
@@ -110,8 +109,8 @@ const LeftSection = () => {
       <div
         className={`${
           isLoginOrSignUp
-            ? 'hidden'
-            : 'block xl:w-2/12 lg:w-3/12 border-r-2 fixed p-5 inset-0'
+            ? "hidden"
+            : "block xl:w-2/12 lg:w-3/12 border-r-2 fixed p-5 inset-0"
         }`}
       >
         <Input
@@ -142,69 +141,78 @@ const LeftSection = () => {
         </div>
 
         <NavComponent
-          onClick={() => setActiveTab('home')}
-          activeTab={activeTab === 'home'}
+          onClick={() => setActiveTab("home")}
+          activeTab={activeTab === "home"}
           icon={AiOutlineHome}
           address="/"
           title="Home"
         />
         <NavComponent
-          onClick={() => setActiveTab('blogs')}
-          activeTab={activeTab === 'blogs'}
+          onClick={() => setActiveTab("blogs")}
+          activeTab={activeTab === "blogs"}
           icon={MdOutlineTipsAndUpdates}
           title="Blogs"
           address="/blogs"
         />
 
         <NavComponent
-          onClick={() => setActiveTab('gardeners')}
-          activeTab={activeTab === 'gardeners'}
+          onClick={() => setActiveTab("gardeners")}
+          activeTab={activeTab === "gardeners"}
           icon={GoMoveToTop}
           title="Top Gardeners"
           address="/top-gardeners"
         />
 
         <NavComponent
-          onClick={() => setActiveTab('about')}
-          activeTab={activeTab === 'about'}
+          onClick={() => setActiveTab("about")}
+          activeTab={activeTab === "about"}
           icon={IoBookmarkOutline}
           title="About"
           address="/about"
         />
         <NavComponent
-          onClick={() => setActiveTab('contact')}
-          activeTab={activeTab === 'contact'}
+          onClick={() => setActiveTab("contact")}
+          activeTab={activeTab === "contact"}
           icon={GrContact}
           title="Contact"
           address="/contact"
         />
         <NavComponent
-          onClick={() => setActiveTab('create')}
-          activeTab={activeTab === 'create'}
+          onClick={() => setActiveTab("create")}
+          activeTab={activeTab === "create"}
           icon={GoPlus}
           title="Create"
           address="/profile/create-post"
         />
 
         <div className="relative cursor-pointer px-4 py-4">
-          {' '}
+          {" "}
           <div
             onClick={() => setIsOpen((val) => !val)}
             className="flex gap-2 items-center "
           >
             <div className="">
               {currentUserInfo?.data?.profilePhoto ? (
-                <img
-                  alt=""
-                  className="size-[40px] rounded-full mr-2"
-                  src={currentUserInfo?.data?.profilePhoto}
-                />
+                <div className="flex items-center gap-2">
+                  <img
+                    alt=""
+                    className="size-[40px] rounded-full mr-2"
+                    src={currentUserInfo?.data?.profilePhoto}
+                  />
+
+                  <p className="text-subTitle ">
+                    {currentUserInfo?.data?.name}
+                  </p>
+                </div>
               ) : (
-                <LuUserRound size={40} />
+                <>
+                  {" "}
+                  <div className="flex items-center gap-2 animate-pulse">
+                    <div className="size-[40px] rounded-full bg-gray-300" />
+                    <div className="h-4 w-24 bg-gray-300 rounded" />
+                  </div>
+                </>
               )}
-            </div>
-            <div>
-              <p className="text-subTitle ">{currentUserInfo?.data?.name}</p>
             </div>
 
             {/* <p className="ml-2 font-extralight ">1d</p> */}
@@ -213,9 +221,9 @@ const LeftSection = () => {
             <div className="absolute  z-50  bg-white rounded-xl shadow-md w-[40vw] md:w-[10vw]  overflow-hidden  top-14 text-sm">
               <div className="flex flex-col pl-4 cursor-pointer">
                 <>
-                  {user?.role === 'USER' ? (
+                  {user?.role === "USER" ? (
                     <>
-                      {' '}
+                      {" "}
                       <Link
                         className=" text-black -4 py-2 hover:bg-neutral-100 transition font-semibold"
                         href={`/profile/${user?._id}`}

@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
+"use client";
 
-import { useQueryClient } from '@tanstack/react-query';
-import { ChangeEvent, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
-import { Button } from '@nextui-org/button';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from "@tanstack/react-query";
+import { ChangeEvent, useState } from "react";
+import { SubmitHandler } from "react-hook-form";
+import { Button } from "@nextui-org/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import GTForm from '@/src/components/form/GTForm';
-import GTInput from '@/src/components/form/GTInput';
-import GTQuill from '@/src/components/form/GTQuill';
-import GTSelect from '@/src/components/form/GTSelect';
-import { useUser } from '@/src/context/user.provider';
-import { useCreatePost } from '@/src/hooks/post.hook';
-import { useGetAllCategories } from '@/src/hooks/category.hook';
-import { createPostSchema } from '@/src/schemas/post.schema';
-import { toast } from 'sonner';
-import { useGetSingleUser } from '@/src/hooks/auth.hook';
+import GTForm from "@/src/components/form/GTForm";
+import GTInput from "@/src/components/form/GTInput";
+import GTQuill from "@/src/components/form/GTQuill";
+import GTSelect from "@/src/components/form/GTSelect";
+import { useUser } from "@/src/context/user.provider";
+import { useCreatePost } from "@/src/hooks/post.hook";
+import { useGetAllCategories } from "@/src/hooks/category.hook";
+import { createPostSchema } from "@/src/schemas/post.schema";
+import { toast } from "sonner";
+import { useGetSingleUser } from "@/src/hooks/auth.hook";
+import CreatePostSkeleton from "@/src/components/loading-skeleton/CreatePostSkeleton";
 
 interface FormValues {
   title: string;
@@ -27,7 +28,6 @@ interface FormValues {
 
 export default function CreatePost() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
   const queryClient = useQueryClient();
 
   const {
@@ -44,7 +44,7 @@ export default function CreatePost() {
   const { data: currentUserData } = useGetSingleUser(user?._id as string);
 
   if (categoriesLoading) {
-    return <p>Loading ...</p>;
+    return <CreatePostSkeleton />;
   }
 
   const categories = categoriesData?.data.data?.map((category: any) => ({
@@ -53,28 +53,28 @@ export default function CreatePost() {
   }));
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    const id = toast.loading('Creating post...');
+    const id = toast.loading("Creating post...");
     const formData = new FormData();
     const postData = {
       user: user?._id,
       title: data.title,
       content: data.content,
       category: data.category,
-      isPremium: data?.type !== 'general',
+      isPremium: data?.type !== "general",
     };
 
-    formData.append('data', JSON.stringify(postData));
+    formData.append("data", JSON.stringify(postData));
     for (const image of imageFiles) {
-      formData.append('itemImages', image);
+      formData.append("itemImages", image);
     }
 
     handleCreatePost(formData, {
       onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: ['POST'] });
-        toast.success('Post created successfully', { id });
+        queryClient.invalidateQueries({ queryKey: ["POST"] });
+        toast.success("Post created successfully", { id });
       },
       onError: () => {
-        toast.error('Something went wrong!', { id });
+        toast.error("Something went wrong!", { id });
       },
     });
   };
@@ -87,8 +87,8 @@ export default function CreatePost() {
   };
 
   const postTypeOption = [
-    { key: 'general', label: 'General' },
-    { key: 'premium', label: 'premium' },
+    { key: "general", label: "General" },
+    { key: "premium", label: "premium" },
   ];
 
   return (
@@ -143,7 +143,7 @@ export default function CreatePost() {
           <label
             aria-label="Upload Your Files"
             className={
-              'flex cursor-pointer hover:bg-athens-gray-50/10 items-center gap-3 rounded border border-dashed border-athens-gray-200 bg-white p-3 transition-all'
+              "flex cursor-pointer hover:bg-athens-gray-50/10 items-center gap-3 rounded border border-dashed border-athens-gray-200 bg-white p-3 transition-all"
             }
             htmlFor="image"
           >

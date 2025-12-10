@@ -24,11 +24,11 @@
 
 // ✅ app/layout.tsx (remains a Server Component)
 
-import { Suspense } from 'react';
-import LeftSection from '@/src/components/sharred/LeftSection';
-import { Navbar } from '@/src/components/UI/Navbar';
-import SkeletonLoading from '@/src/components/UI/SkeletonLoading';
-import LeftSectionSkeleton from '@/src/components/UI/LeftSkeleton';
+import { Suspense } from "react";
+import LeftSection from "@/src/components/sharred/LeftSection";
+import { Navbar } from "@/src/components/UI/Navbar";
+import SkeletonLoading from "@/src/components/UI/SkeletonLoading";
+import LeftSectionSkeleton from "@/src/components/UI/LeftSkeleton";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

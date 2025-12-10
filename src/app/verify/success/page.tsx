@@ -1,3 +1,4 @@
+"use client";
 import React, { Suspense } from "react";
 import ProfileVerificationFailedSkeleton from "@/src/components/loading-skeleton/ProfileVerificationFailedSkeleton";
 import ProfileVerificationSuccess from "./VerifySuccessComponent";

@@ -1,8 +1,8 @@
-'use client';
-import { IBlog } from '@/src/types';
-import React from 'react';
-import Link from 'next/link';
-import moment from 'moment';
+"use client";
+import { IBlog } from "@/src/types";
+import React from "react";
+import Link from "next/link";
+import moment from "moment";
 
 const SingleBlogCard = ({ post }: { post: IBlog }) => {
   const { _id, images, title, content, author, status, createdAt } = post;
@@ -15,8 +15,8 @@ const SingleBlogCard = ({ post }: { post: IBlog }) => {
           {/* User Info */}
           <div className="flex items-center gap-3">
             <img
-              src={author?.profilePhoto || '/default-avatar.png'}
-              alt={author?.name || 'User'}
+              src={author?.profilePhoto || "/default-avatar.png"}
+              alt={author?.name || "User"}
               className="w-10 h-10 rounded-full object-cover border"
             />
             <div className="text-sm">
@@ -26,7 +26,7 @@ const SingleBlogCard = ({ post }: { post: IBlog }) => {
               </p>
               <p
                 className={`text-xs font-medium ${
-                  status === 'approved' ? 'text-primary' : 'text-red-600'
+                  status === "approved" ? "text-primary" : "text-red-600"
                 } `}
               >
                 {status}

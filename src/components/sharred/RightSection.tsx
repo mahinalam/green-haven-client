@@ -1,15 +1,15 @@
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useUser } from '@/src/context/user.provider';
-import SuggesstedCard from './SuggesstedCard';
-import { logout } from '@/src/services/AuthService';
-import { useRouter } from 'next/navigation';
-import { useGetAllPosts } from '@/src/hooks/post.hook';
-import { IPost } from '@/src/types';
-import { useGetSingleUser } from '@/src/hooks/auth.hook';
-import { LuUserRound } from 'react-icons/lu';
-import { toast } from 'sonner';
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { useUser } from "@/src/context/user.provider";
+import SuggesstedCard from "./SuggesstedCard";
+import { logout } from "@/src/services/AuthService";
+import { useRouter } from "next/navigation";
+import { useGetAllPosts } from "@/src/hooks/post.hook";
+import { IPost } from "@/src/types";
+import { useGetSingleUser } from "@/src/hooks/auth.hook";
+import { LuUserRound } from "react-icons/lu";
+import { toast } from "sonner";
 
 const RightSection = () => {
   const { user, setIsLoading, setUser } = useUser();
@@ -31,37 +31,45 @@ const RightSection = () => {
     await logout();
     setUser(null);
     toast.success(`${user?.name} logged out successfully!`);
-    router.push('/login');
+    router.push("/login");
   };
   return (
     <div className="relative ">
       {/* profile image section */}
       <Link
         href={
-          user?.role === 'USER'
+          user?.role === "USER"
             ? `/profile/${user?._id}`
-            : '/profile/edit-profile'
+            : "/profile/edit-profile"
         }
         className="inline-flex gap-2 items-center cursor-pointer"
       >
         <div className="">
           {currentUserInfo?.data?.profilePhoto ? (
-            <img
-              alt=""
-              className="size-[40px] rounded-full mr-2"
-              src={currentUserInfo?.data?.profilePhoto}
-            />
+            <div className="flex gap-2 items-start">
+              <img
+                alt=""
+                className="size-[40px] rounded-full mr-2"
+                src={currentUserInfo?.data?.profilePhoto}
+              />
+              <div>
+                <p className="lg:text-sm hover:underline">
+                  {currentUserInfo?.data?.email}
+                </p>
+                <p className="text-subTitle hover:underline">
+                  {currentUserInfo?.data?.name}
+                </p>
+              </div>
+            </div>
           ) : (
-            <LuUserRound size={40} />
+            <div className="flex gap-2 items-start animate-pulse">
+              <div className="size-[40px] rounded-full bg-gray-300 mr-2" />
+              <div className="space-y-2">
+                <div className="h-3 w-32 bg-gray-300 rounded" />
+                <div className="h-4 w-24 bg-gray-300 rounded" />
+              </div>
+            </div>
           )}
-        </div>
-        <div>
-          <p className="lg:text-sm hover:underline">
-            {currentUserInfo?.data?.email}
-          </p>
-          <p className="text-subTitle hover:underline">
-            {currentUserInfo?.data?.name}
-          </p>
         </div>
       </Link>
 
